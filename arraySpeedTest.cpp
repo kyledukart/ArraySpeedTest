@@ -10,7 +10,7 @@ using namespace std;
 typedef chrono::high_resolution_clock Clock;
 
 int number_of_elements = 10000000;
-
+int output_width = floor(log10(number_of_elements) + 1);
 
 
 int* theArray;
@@ -18,32 +18,32 @@ vector<int> theVector;
 
 int main() {
   //output formatting
-  cout << fixed << setprecision(floor(log10(number_of_elements) + 1)) << std::left;
+  cout << fixed << setprecision(output_width) << std::left;
 
   //initialize
   auto clockStart = Clock::now();
   testArrayInitialize();
   auto clockEnd = Clock::now();
-  cout << "Array initialization took "
+  cout << "Array initialization took " << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   clockStart = Clock::now();
   testVectorInitialize();
   clockEnd = Clock::now();
-  cout << "Vector initialization took "
+  cout << "Vector initialization took " << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   // access and sum
   auto clockStart = Clock::now();
   int arraySequentialOutput = testArraySequentialAccess();
   auto clockEnd = Clock::now();
-  cout << "Array access and sum took "
+  cout << "Array access and sum took " << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   auto clockStart = Clock::now();
   int vectorSequentialOutput = testVectorSequentialAccess();
   auto clockEnd = Clock::now();
-  cout << "Vector access and sum took "
+  cout << "Vector access and sum took " << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
 }
