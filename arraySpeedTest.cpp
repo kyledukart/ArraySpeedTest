@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <chrono>
 #include <vector>
+#include <random>
 
 using namespace std;
 
@@ -48,13 +49,13 @@ int main() {
 
   // random access and sum
   auto clockStart = Clock::now();
-  int arrayRandomOutput = testArrayRandomAccess();
+  int arrayRandomOutput = testArrayRandomAccess(&gen, &distrib);
   auto clockEnd = Clock::now();
   cout << "Array access and sum took " << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   auto clockStart = Clock::now();
-  int vectorRandomOutput = testVectorRandomAccess();
+  int vectorRandomOutput = testVectorRandomAccess(&gen, &distrib);
   auto clockEnd = Clock::now();
   cout << "Vector access and sum took " << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
@@ -88,17 +89,23 @@ int testVectorSequentialAccess(){
 }
 
 int testArrayRandomAccess() {
+  // set up random number generator
+  random_device rd;  // seeds the rng
+  mt19937 gen(rd()); // mersenne twister seeded with rd()
+  uniform_int_distribution distrib(0,(number_of_elements - 1));  // range of output
   int sum = 0;
-
-
-
+  for (unsigned int i = 0; i < number_of_elements; ++i)
+    sum += theVector.at(distrib(gen));
   return sum;
 }
 
 int testVectorRandomAccess() {
+  // set up random number generator
+  random_device rd;  // seeds the rng
+  mt19937 gen(rd()); // mersenne twister seeded with rd()
+  uniform_int_distribution distrib(0,(number_of_elements - 1));  // range of output
   int sum = 0;
-
-
-
+  for (unsigned int i = 0; i < number_of_elements; ++i)
+    sum += theVector.at(distrib(gen));
   return sum;
 }
