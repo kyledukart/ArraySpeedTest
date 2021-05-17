@@ -49,13 +49,13 @@ int main() {
 
   // random access and sum
   auto clockStart = Clock::now();
-  int arrayRandomOutput = testArrayRandomAccess(&gen, &distrib);
+  int arrayRandomOutput = testArrayRandomAccess();
   auto clockEnd = Clock::now();
   cout << "Array access and sum took " << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   auto clockStart = Clock::now();
-  int vectorRandomOutput = testVectorRandomAccess(&gen, &distrib);
+  int vectorRandomOutput = testVectorRandomAccess();
   auto clockEnd = Clock::now();
   cout << "Vector access and sum took " << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
