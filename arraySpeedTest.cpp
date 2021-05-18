@@ -17,51 +17,6 @@ int output_width = floor(log10(number_of_elements) + 1);
 int* theArray;
 vector<int> theVector;
 
-int main() {
-  //output formatting
-  cout << fixed << setprecision(output_width) << std::left;
-
-  //initialize
-  auto clockStart = Clock::now();
-  testArrayInitialize();
-  auto clockEnd = Clock::now();
-  cout << "Array initialization took " << setw(output_width)
-    << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
-
-  clockStart = Clock::now();
-  testVectorInitialize();
-  clockEnd = Clock::now();
-  cout << "Vector initialization took " << setw(output_width)
-    << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
-
-  // access and sum
-  auto clockStart = Clock::now();
-  int arraySequentialOutput = testArraySequentialAccess();
-  auto clockEnd = Clock::now();
-  cout << "Array access and sum took " << setw(output_width)
-    << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
-
-  auto clockStart = Clock::now();
-  int vectorSequentialOutput = testVectorSequentialAccess();
-  auto clockEnd = Clock::now();
-  cout << "Vector access and sum took " << setw(output_width)
-    << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
-
-  // random access and sum
-  auto clockStart = Clock::now();
-  int arrayRandomOutput = testArrayRandomAccess();
-  auto clockEnd = Clock::now();
-  cout << "Array access and sum took " << setw(output_width)
-    << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
-
-  auto clockStart = Clock::now();
-  int vectorRandomOutput = testVectorRandomAccess();
-  auto clockEnd = Clock::now();
-  cout << "Vector access and sum took " << setw(output_width)
-    << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
-
-}
-
 void testArrayInitialize() {
   theArray = new int[number_of_elements];
   for (unsigned int i = 0; i < number_of_elements; ++i)
@@ -92,7 +47,7 @@ int testArrayRandomAccess() {
   // set up random number generator
   random_device rd;  // seeds the rng
   mt19937 gen(rd()); // mersenne twister seeded with rd()
-  uniform_int_distribution distrib(0,(number_of_elements - 1));  // range of output
+  uniform_int_distribution<> distrib(0,(number_of_elements - 1));  // range of output
   int sum = 0;
   for (unsigned int i = 0; i < number_of_elements; ++i)
     sum += theVector.at(distrib(gen));
@@ -103,9 +58,54 @@ int testVectorRandomAccess() {
   // set up random number generator
   random_device rd;  // seeds the rng
   mt19937 gen(rd()); // mersenne twister seeded with rd()
-  uniform_int_distribution distrib(0,(number_of_elements - 1));  // range of output
+  uniform_int_distribution<> distrib(0,(number_of_elements - 1));  // range of output
   int sum = 0;
   for (unsigned int i = 0; i < number_of_elements; ++i)
     sum += theVector.at(distrib(gen));
   return sum;
+}
+
+int main() {
+  //output formatting
+  cout << fixed << setprecision(output_width) << std::left;
+
+  //initialize
+  auto clockStart = Clock::now();
+  testArrayInitialize();
+  auto clockEnd = Clock::now();
+  cout << "Array initialization took " << setw(output_width)
+    << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
+
+  clockStart = Clock::now();
+  testVectorInitialize();
+  clockEnd = Clock::now();
+  cout << "Vector initialization took " << setw(output_width)
+    << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
+
+  // access and sum
+  clockStart = Clock::now();
+  int arraySequentialOutput = testArraySequentialAccess();
+  clockEnd = Clock::now();
+  cout << "Array access and sum took " << setw(output_width)
+    << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
+
+  clockStart = Clock::now();
+  int vectorSequentialOutput = testVectorSequentialAccess();
+  clockEnd = Clock::now();
+  cout << "Vector access and sum took " << setw(output_width)
+    << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
+
+  // random access and sum
+  clockStart = Clock::now();
+  int arrayRandomOutput = testArrayRandomAccess();
+  clockEnd = Clock::now();
+  cout << "Array random access and sum took " << setw(output_width)
+    << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
+
+  clockStart = Clock::now();
+  int vectorRandomOutput = testVectorRandomAccess();
+  clockEnd = Clock::now();
+  cout << "Vector random access and sum took " << setw(output_width)
+    << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
+
 }
