@@ -73,39 +73,39 @@ int main() {
   auto clockStart = Clock::now();
   testArrayInitialize();
   auto clockEnd = Clock::now();
-  cout << "Array initialization took " << setw(output_width)
+  cout << "Array initialization took \t" << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   clockStart = Clock::now();
   testVectorInitialize();
   clockEnd = Clock::now();
-  cout << "Vector initialization took " << setw(output_width)
+  cout << "Vector initialization took \t" << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   // access and sum
   clockStart = Clock::now();
   int arraySequentialOutput = testArraySequentialAccess();
   clockEnd = Clock::now();
-  cout << "Array access and sum took " << setw(output_width)
+  cout << "Array access and sum took \t" << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   clockStart = Clock::now();
   int vectorSequentialOutput = testVectorSequentialAccess();
   clockEnd = Clock::now();
-  cout << "Vector access and sum took " << setw(output_width)
+  cout << "Vector access and sum took \t" << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   // random access and sum
   clockStart = Clock::now();
   int arrayRandomOutput = testArrayRandomAccess();
   clockEnd = Clock::now();
-  cout << "Array random access and sum took " << setw(output_width)
+  cout << "Array random access and sum took \t" << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   clockStart = Clock::now();
   int vectorRandomOutput = testVectorRandomAccess();
   clockEnd = Clock::now();
-  cout << "Vector random access and sum took " << setw(output_width)
+  cout << "Vector random access and sum took \t" << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
 }
