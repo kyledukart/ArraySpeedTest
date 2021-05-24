@@ -16,6 +16,7 @@ int output_width = floor(log10(number_of_elements) + 1);
 
 
 int* theArray;
+int* randomArray;
 vector<int> theVector;
 valarray<int> theValarray;
 
@@ -58,33 +59,24 @@ int testValarraySequentialAccess() {
   return sum;
 }
 
-int testArrayRandomAccess() {
-  random_device rd;  // seeds the rng
-  mt19937 gen(rd()); // mersenne twister seeded with rd()
-  uniform_int_distribution<> distrib(0,(number_of_elements - 1));  // range of output
+int testArrayRandomAccess(int *randomArray) {
   int sum = 0;
   for (unsigned int i = 0; i < number_of_elements; ++i)
-    sum += theArray[distrib(gen)];
+    sum += theArray[randomArray[i]];
   return sum;
 }
 
-int testVectorRandomAccess() {
-  random_device rd;  // seeds the rng
-  mt19937 gen(rd()); // mersenne twister seeded with rd()
-  uniform_int_distribution<> distrib(0,(number_of_elements - 1));  // range of output
+int testVectorRandomAccess(int *randomArray) {
   int sum = 0;
   for (unsigned int i = 0; i < number_of_elements; ++i)
-    sum += theVector.at(distrib(gen));
+    sum += theVector.at(randomArray[i]);
   return sum;
 }
 
-int testValarrayRandomAccess() {
-  random_device rd;  // seeds the rng
-  mt19937 gen(rd()); // mersenne twister seeded with rd()
-  uniform_int_distribution<> distrib(0,(number_of_elements - 1));  // range of output
+int testValarrayRandomAccess(int *randomArray) {
   int sum = 0;
   for (unsigned int i = 0; i < number_of_elements; ++i)
-    sum += theValarray[distrib(gen)];
+    sum += theValarray[randomArray[i]];
   return sum;
 }
 
@@ -130,21 +122,28 @@ int main() {
   cout << "Valarray access and sum took \t" << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
+  // fill random array
+  random_device rd;  // seeds the rng
+  mt19937 gen(rd()); // mersenne twister seeded with rd()
+  uniform_int_distribution<> distrib(0,(number_of_elements - 1));  // range of output
+  for (unsigned int i = 0; i < number_of_elements; ++i)
+    randomArray[i] = distrib(gen);
+
   // random access and sum
   clockStart = Clock::now();
-  int arrayRandomOutput = testArrayRandomAccess();
+  int arrayRandomOutput = testArrayRandomAccess(randomArray);
   clockEnd = Clock::now();
   cout << "Array random access and sum took \t" << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   clockStart = Clock::now();
-  int vectorRandomOutput = testVectorRandomAccess();
+  int vectorRandomOutput = testVectorRandomAccess(randomArray);
   clockEnd = Clock::now();
   cout << "Vector random access and sum took \t" << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   clockStart = Clock::now();
-  int valarrayRandomOutput = testValarrayRandomAccess();
+  int valarrayRandomOutput = testValarrayRandomAccess(randomArray);
   clockEnd = Clock::now();
   cout << "Valarray random access and sum took \t" << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
