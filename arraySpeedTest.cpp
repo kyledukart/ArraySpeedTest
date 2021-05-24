@@ -22,20 +22,18 @@ valarray<int> theValarray;
 
 void testArrayInitialize() {
   theArray = new int[number_of_elements];
-  for (unsigned int i = 0; i < number_of_elements; ++i)
-    theArray[i] = i;
+  theArray = {0};
 }
 
 void testVectorInitialize() {
   theVector.reserve(number_of_elements);
-  for (unsigned int i = 0; i < number_of_elements; ++i)
-    theVector.push_back(i);
+  fill(theVector.begin(), theVector.end(), 0);
 }
 
 void testValarrayInitialize() {
   theValarray.resize(number_of_elements);
   for (unsigned int i = 0; i < number_of_elements; ++i)
-    theValarray[i] = i;
+    theValarray[i] = 0;
 }
 
 int testArraySequentialAccess() {
