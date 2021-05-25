@@ -6,12 +6,13 @@
 #include <vector>
 #include <random>
 #include <valarray>
+#include <stdio.h>
 
 using namespace std;
 
 typedef chrono::high_resolution_clock Clock;
 
-int number_of_elements = 10000000;
+int number_of_elements = 100000000;
 int output_width = floor(log10(number_of_elements) + 1);
 
 
@@ -23,17 +24,19 @@ valarray<int> theValarray;
 
 void testArrayInitialize() {
   theArray = new int[number_of_elements];
-  theArray = {0};
+  fill(theArray, theArray+number_of_elements, 0);
 }
 
 void testVectorInitialize() {
   theVector.reserve(number_of_elements);
-  fill(theVector.begin(), theVector.end(), 0);
+  //fill(theVector.begin(), theVector.end(), 0);
+  for (unsigned int i = 0; i < number_of_elements; ++i)
+    theVector.push_back(0);
 }
 
 void testValarrayInitialize() {
   theValarray.resize(number_of_elements);
-  for (unsigned int i = 0; i < number_of_elements; ++i)
+  for (unsigned int i = 0; i <= number_of_elements; i++)
     theValarray[i] = 0;
 }
 
@@ -46,49 +49,49 @@ int testArraySequentialAccess() {
 
 int testVectorSequentialAccess(){
   int sum = 0;
-  for (unsigned int i = 0; i < number_of_elements; ++i)
+  for (unsigned int i = 0; i < number_of_elements; i++)
     sum += theVector[i];
   return sum;
 }
 
 int testAtVectorSequentialAccess(){
   int sum = 0;
-  for (unsigned int i = 0; i < number_of_elements; ++i)
+  for (unsigned int i = 0; i < number_of_elements; i++)
     sum += theVector.at(i);
   return sum;
 }
 
 int testValarraySequentialAccess() {
   int sum = 0;
-  for (unsigned int i = 0; i < number_of_elements; ++i)
+  for (unsigned int i = 0; i < number_of_elements; i++)
     sum += theValarray[i];
   return sum;
 }
 
 int testArrayRandomAccess(int *randomArray) {
   int sum = 0;
-  for (unsigned int i = 0; i < number_of_elements; ++i)
+  for (unsigned int i = 0; i < number_of_elements; i++)
     sum += theArray[randomArray[i]];
   return sum;
 }
 
 int testVectorRandomAccess(int *randomArray) {
   int sum = 0;
-  for (unsigned int i = 0; i < number_of_elements; ++i)
+  for (unsigned int i = 0; i < number_of_elements; i++)
     sum += theVector[randomArray[i]];
   return sum;
 }
 
 int testAtVectorRandomAccess(int *randomArray) {
   int sum = 0;
-  for (unsigned int i = 0; i < number_of_elements; ++i)
+  for (unsigned int i = 0; i < number_of_elements; i++)
     sum += theVector.at(randomArray[i]);
   return sum;
 }
 
 int testValarrayRandomAccess(int *randomArray) {
   int sum = 0;
-  for (unsigned int i = 0; i < number_of_elements; ++i)
+  for (unsigned int i = 0; i < number_of_elements; i++)
     sum += theValarray[randomArray[i]];
   return sum;
 }
@@ -129,11 +132,10 @@ int main() {
   cout << "Vector [] access and sum took \t" << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
-  // create theAtVector
   theAtVector = theVector;
 
   clockStart = Clock::now();
-  int vectorSequentialOutput = testAtVectorSequentialAccess();
+  int atVectorSequentialOutput = testAtVectorSequentialAccess();
   clockEnd = Clock::now();
   cout << "Vector .at() access and sum took \t" << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
@@ -148,6 +150,7 @@ int main() {
   random_device rd;  // seeds the rng
   mt19937 gen(rd()); // mersenne twister seeded with rd()
   uniform_int_distribution<> distrib(0,(number_of_elements - 1));  // range of output
+  randomArray = new int[number_of_elements];
   for (unsigned int i = 0; i < number_of_elements; ++i)
     randomArray[i] = distrib(gen);
 
@@ -165,7 +168,7 @@ int main() {
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   clockStart = Clock::now();
-  int vectorRandomOutput = testAtVectorRandomAccess(randomArray);
+  int atVectorRandomOutput = testAtVectorRandomAccess(randomArray);
   clockEnd = Clock::now();
   cout << "Vector .at() random access and sum took \t" << setw(output_width)
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
@@ -177,5 +180,5 @@ int main() {
     << chrono::duration_cast<chrono::microseconds>(clockEnd - clockStart).count() << "µs" << endl;
 
   cout << "total sum: " << (arraySequentialOutput + vectorSequentialOutput + valarraySequentialOutput +
-  arrayRandomOutput + vectorRandomOutput + valarrayRandomOutput);
+  arrayRandomOutput + vectorRandomOutput + valarrayRandomOutput + atVectorSequentialOutput + atVectorRandomOutput);
 }
